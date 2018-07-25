@@ -25,7 +25,7 @@ exomePeak2_PC <- function(coldata,
   code_epcalling[index_last] <- paste0(code_epcalling[index_last],", txdb = TxDb.Hsapiens.UCSC.hg19.knownGene)")
   code_epcalling[1] <- paste0("SEP <- ", code_epcalling[1])
 
-  code_save <- paste0("saveRDS( SEP, '", paste0(pre_name, coldata$Experiment[1]), ".rds' )")
+  code_save <- paste0("saveRDS( SEP, '", paste0(front_name, coldata$Experiment[1]), ".rds' )")
   code_all <- c(code_library, code_epcalling, code_save)
 
   return(code_all)
