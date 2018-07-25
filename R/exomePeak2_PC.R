@@ -3,14 +3,15 @@
 #'@import exomePeak2
 #'@export
 exomePeak2_PC <- function(coldata,
-                                  front_name,
-                                  ...){
+                          bam_dir,
+                          front_name,
+                          ...){
   #Create specific representation of those code.
   code_library <- c("library(exomePeak2)",
                     "library(TxDb.Hsapiens.UCSC.hg19.knownGene)")
 
   expr_scanbam <- call("scanMeripBAM",
-    bam_files = paste0(coldata$SRR_RUN, ".bam" ),
+    bam_files = paste0( bam_dir, "/", coldata$SRR_RUN, ".bam" ),
     design_ip = coldata$IP_input == "IP" ,
     paired_end = all(coldata$Lib == "Paired")
   )

@@ -53,7 +53,7 @@ coldata_lst <- coldata_lst
 }
 
 #create codes with coding function
-code_lst <- lapply(coldata_lst, pc_function, front_name = front_name)
+code_lst <- lapply(coldata_lst, pc_function, bam_dir = bam_dir, front_name = front_name)
 
 #save R scripts on the system
 Rscript_names <- paste0(front_name, names(code_lst), ".R" )
@@ -66,6 +66,7 @@ mapply(function(x,y) writeLines(x, y),
 Rscript_commands <- paste0("Rscript ",Rscript_names)
 bash_chunks <- split(Rscript_commands, cut(seq_along(Rscript_commands), parallel_num))
 bash_names <- paste0( front_name, seq_len(parallel_num), ".sh" )
+names(bash_chunks) <- bash_names
 
 #Submit the bash commands with desired parallel number
 mapply(Rnohup,
