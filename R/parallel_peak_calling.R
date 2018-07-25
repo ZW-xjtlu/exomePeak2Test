@@ -7,9 +7,9 @@
 #'@param pc_function a peak calling function that takes the segragated coldata as input, and take a code string as output.
 #'@param front_name a character string define the prefixes of the saved files.
 #'@param ... arguments that passed to the peak calling function.
-#'@detail The coldata will be splitted only through the column of "Experiment".
+#'@details The coldata will be splitted only through the column of "Experiment".
 #'@return multiple \link{\code{summarizedExomePeaks}} objects or others organized by experimental design.
-#'@example
+#'@examples
 #'ColData_hg19 <- read.csv("coldata_hg19.csv")
 #'parallel_peak_calling(
 #'coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
@@ -18,6 +18,7 @@
 #'parallel_num = 9,
 #'pc_function = exomePeak2_PC
 #')
+#'@import magrittr
 #'@export
 parallel_peak_calling <- function(coldata,
                                   bam_dir,

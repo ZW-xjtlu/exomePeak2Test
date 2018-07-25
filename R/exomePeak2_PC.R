@@ -1,5 +1,6 @@
 #'@title Produce code for Peak Calling with exomePeak2
-#'@imoort exomePeak2
+#'@import magrittr
+#'@import exomePeak2
 #'@export
 exomePeak2_PC <- function(coldata,
                                   front_name,
