@@ -3,8 +3,14 @@
 #' @param bashname the prefix name of files saved under bash.
 #'
 Rnohup <-
-  function(command,bashname = "X") {
-    writeLines(command,paste0(bashname,".sh"))
-    system(paste0("chmod +x ./", paste0(bashname,".sh")))
-    system(paste0("nohup ./",paste0(bashname,".sh"), ifelse(is.null(bashname),"",paste0(" > ",bashname,".out"))," &"))
-  }
+  function(command, bashname = "X") {
+
+    writeLines(command,bashname)
+
+    system(paste0("chmod +x ", bashname))
+
+    outname <- gsub(".sh$",".out",bashname)
+
+    system(paste0("nohup ", bashname, " > ", outname, " &"))
+
+}

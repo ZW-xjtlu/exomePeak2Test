@@ -21,8 +21,8 @@
 #'@import magrittr
 #'@export
 parallel_peak_calling <- function(coldata,
-                                  bam_dir,
-                                  save_dir,
+                                  bam_dir = "./",
+                                  save_dir = "./",
                                   autocreate = T,
                                   parallel_num = 9,
                                   pc_function = exomePeak2_PC,
@@ -45,11 +45,16 @@ coldata_lst <- split(coldata,coldata$Experiment)
 index_complete <- sapply(coldata_lst,function(x) any(x$IP_input == "IP")&any(x$IP_input == "input"))
 
 if(any(!index_complete )){
+
 warning(paste0(
 "The dataset ", paste(names(index_complete)[!index_complete], collapse = ", "),
 " have either no IP or input samples, the incomplete samples will not be analyzed."
-),call.=FALSE,immediate.= TRUE)
+),
+call.=FALSE,
+immediate.= TRUE)
+
 coldata_lst <- coldata_lst
+
 }
 
 #create codes with coding function
@@ -60,7 +65,7 @@ Rscript_names <- paste0(front_name, names(code_lst), ".R" )
 
 mapply(function(x,y) writeLines(x, y),
        code_lst,
-       Rscript_names)
+       paste0(save_dir, "/", Rscript_names))
 
 #arrage the chunk of qsub according to parallel_num
 Rscript_commands <- paste0("Rscript ",Rscript_names)
@@ -71,5 +76,5 @@ names(bash_chunks) <- bash_names
 #Submit the bash commands with desired parallel number
 mapply(Rnohup,
        bash_chunks,
-       bash_names)
+       paste0(save_dir, "/", bash_names))
 }
