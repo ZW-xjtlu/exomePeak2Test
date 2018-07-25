@@ -1,0 +1,11 @@
+Package: exomePeak2Test
+Type: Package
+Title: Easy test of the exomePeak2 performance.
+Version: 0.1.0
+Author: Zhen Wei
+Maintainer: Zhen Wei <zhen.wei10@icloud.com>
+Description: This package attempts to facilitate the procedure of the evaluation of the performance for exomePeak2.
+License: GPL (>= 2)
+Imports: exomePeak2,magrittr,ggplot2
+Encoding: UTF-8
+LazyData: true
