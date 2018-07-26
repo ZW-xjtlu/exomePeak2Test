@@ -4,5 +4,5 @@
 \alias{exomePeak2_PC}
 \title{Produce code for Peak Calling with exomePeak2}
 \usage{
-exomePeak2_PC(coldata, front_name, ...)
+exomePeak2_PC(coldata, bam_dir, front_name, ...)
 }

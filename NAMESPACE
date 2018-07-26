@@ -2,5 +2,7 @@
 
 export(exomePeak2_PC)
 export(parallel_peak_calling)
+export(parallel_report)
+export(reads_GC_plot)
 import(exomePeak2)
 import(magrittr)
