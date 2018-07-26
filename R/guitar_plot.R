@@ -2,7 +2,7 @@
 #'@import magrittr
 #'@import exomePeak2
 #'@export
-reads_GC_plot <- function(pkc_rds_file,
+guitar_plot <- function(pkc_rds_file,
                           front_name,
                           ...){
   code_library <- c("library(exomePeak2)",

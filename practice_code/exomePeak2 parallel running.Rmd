@@ -50,6 +50,7 @@ pkc_prefix = "pkc_",
 pkc_suffix = ".rds",
 save_dir = "~/exomepeak2_guitar_peaks",
 parallel_num = 9,
+front_name = "guitar_",
 report_function = guitar_plot
 )
 ```

@@ -73,7 +73,7 @@ parallel_report <- function(
   parallel_num = min(length(code_lst), parallel_num)
 
   #arrage the chunk of qsub according to parallel_num
-  Rscript_commands <- paste0("Rscript ", Rscript_names)
+  Rscript_commands <- paste0("Rscript ", save_dir, "/", Rscript_names)
   bash_chunks <-
     split(Rscript_commands, cut(seq_along(Rscript_commands),  parallel_num))
   bash_names <- paste0(front_name, seq_len(parallel_num), ".sh")
