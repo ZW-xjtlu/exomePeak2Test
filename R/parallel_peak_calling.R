@@ -29,52 +29,66 @@ parallel_peak_calling <- function(coldata,
                                   front_name = "pkc_",
                                   ...) {
 
-#check directories
-bam_dir <- gsub("/$","",bam_dir)
-save_dir <- gsub("/$","",save_dir)
-stopifnot(all(file.exists(paste0(bam_dir,"/",coldata$SRR_RUN, ".bam"))))
-if(!file.exists(save_dir)) {
-stopifnot(autocreate)
-file.create(save_dir)
-}
+  #check directories
+  bam_dir <- gsub("/$", "", bam_dir)
+  save_dir <- gsub("/$", "", save_dir)
+  stopifnot(all(file.exists(
+    paste0(bam_dir, "/", coldata$SRR_RUN, ".bam")
+  )))
+  if (!dir.exists(save_dir)) {
+    stopifnot(autocreate)
+    dir.create(save_dir)
+  }
 
-#split coldata by experiments
-coldata_lst <- split(coldata,coldata$Experiment)
+  #split coldata by experiments
+  coldata_lst <- split(coldata, coldata$Experiment)
 
-#check the completeness of coldata
-index_complete <- sapply(coldata_lst,function(x) any(x$IP_input == "IP")&any(x$IP_input == "input"))
+  #check the completeness of coldata
+  index_complete <-
+    sapply(coldata_lst, function(x)
+      any(x$IP_input == "IP") & any(x$IP_input == "input"))
 
-if(any(!index_complete )){
+  if (any(!index_complete)) {
+    warning(
+      paste0(
+        "The dataset ",
+        paste(names(index_complete)[!index_complete], collapse = ", "),
+        " have either no IP or input samples, the incomplete samples will not be analyzed."
+      ),
+      call. = FALSE,
+      immediate. = TRUE
+    )
 
-warning(paste0(
-"The dataset ", paste(names(index_complete)[!index_complete], collapse = ", "),
-" have either no IP or input samples, the incomplete samples will not be analyzed."
-),
-call.=FALSE,
-immediate.= TRUE)
+    coldata_lst <- coldata_lst
 
-coldata_lst <- coldata_lst
+  }
 
-}
+  #create codes with coding function
+  code_lst <-
+    lapply(coldata_lst,
+           pc_function,
+           bam_dir = bam_dir,
+           front_name = front_name)
 
-#create codes with coding function
-code_lst <- lapply(coldata_lst, pc_function, bam_dir = bam_dir, front_name = front_name)
+  #save R scripts on the system
+  Rscript_names <- paste0(front_name, names(code_lst), ".R")
 
-#save R scripts on the system
-Rscript_names <- paste0(front_name, names(code_lst), ".R" )
+  mapply(function(x, y)
+    writeLines(x, y),
+    code_lst,
+    paste0(save_dir, "/", Rscript_names))
 
-mapply(function(x,y) writeLines(x, y),
-       code_lst,
-       paste0(save_dir, "/", Rscript_names))
+  parallel_num = min(length(code_lst), parallel_num)
 
-#arrage the chunk of qsub according to parallel_num
-Rscript_commands <- paste0("Rscript ",Rscript_names)
-bash_chunks <- split(Rscript_commands, cut(seq_along(Rscript_commands), parallel_num))
-bash_names <- paste0( front_name, seq_len(parallel_num), ".sh" )
-names(bash_chunks) <- bash_names
+  #arrage the chunk of qsub according to parallel_num
+  Rscript_commands <- paste0("Rscript ", Rscript_names)
+  bash_chunks <-
+    split(Rscript_commands, cut(seq_along(Rscript_commands),  parallel_num))
+  bash_names <- paste0(front_name, seq_len(parallel_num), ".sh")
+  names(bash_chunks) <- bash_names
 
-#Submit the bash commands with desired parallel number
-mapply(Rnohup,
-       bash_chunks,
-       paste0(save_dir, "/", bash_names))
+  #Submit the bash commands with desired parallel number
+  mapply(Rnohup,
+         bash_chunks,
+         paste0(save_dir, "/", bash_names))
 }
