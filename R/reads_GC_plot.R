@@ -13,6 +13,15 @@ reads_GC_plot <- function(pkc_rds_file,
   expr_readRDS <- call("readRDS",
                        file = pkc_rds_file)
 
+  code_GC_norm <- call("GCnormalization",
+                       sep = expr_readRDS) %>% deparse
+
+  arguments_annotation <- c("Hsapiens", "TxDb.Hsapiens.UCSC.hg19.knownGene")
+
+  names(arguments_annotation) <- c("bsgenome", "txdb")
+
+  code_GC_norm <- introduce_arg(code_GC_norm, arguments_annotation)
+
   save_name <- gsub(".*\\/", "", pkc_rds_file)
 
   save_name <- gsub(".rds", "", save_name)
@@ -20,16 +29,14 @@ reads_GC_plot <- function(pkc_rds_file,
   save_name <- paste0(front_name, save_name)
 
   code_readsGC <- call("plotReadsGC",
-                         sep = expr_readRDS,
                          save_pdf_prefix = save_name
   ) %>% deparse #ellipse is not implemented yet, since call function cannot recognize it.
 
-  index_last <- length(code_readsGC)
+  arguments_plot <- code_GC_norm
 
-  code_readsGC[index_last] <- gsub(")$", "", code_readsGC[index_last] )
+  names(arguments_plot) <- "sep"
 
-  code_readsGC[index_last] <- paste0(code_readsGC[index_last],
-                                ", bsgenome = Hsapiens, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene)")
+  code_readsGC <- introduce_arg( code_readsGC , arguments_plot )
 
   code_all <- c(code_library, code_readsGC)
 
