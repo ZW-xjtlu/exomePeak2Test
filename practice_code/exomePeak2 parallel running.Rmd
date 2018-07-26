@@ -18,8 +18,22 @@ parallel_peak_calling(
 coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
 bam_dir = "~/merip_bam",
 save_dir = "~/exomepeak2_test",
-parallel_num = 6,
+parallel_num = 9,
 pc_function = exomePeak2_PC
 )
 ```
+
+Report the peak calling results, e.x. stored summarizedExomePeaks object and analyze it in certain ways.
+
+```{bash}
+parallel_report(
+pkc_dir = "~/exomepeak2_test"
+pkc_prefix = "pkc_",
+pkc_suffix = ".rds",
+save_dir = "~/exomepeak2_GC_peaks",
+parallel_num = 9,
+report_function = reads_GC_plot
+)
+```
+
 
