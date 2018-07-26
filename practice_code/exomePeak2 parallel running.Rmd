@@ -36,7 +36,23 @@ save_dir = "~/exomepeak2_GC_peaks",
 parallel_num = 9,
 report_function = reads_GC_plot
 )
-
 ```
+
+
+plot guitars
+
+```{r}
+library(exomePeak2Test)
+
+parallel_report(
+pkc_dir = "~/exomepeak2_test",
+pkc_prefix = "pkc_",
+pkc_suffix = ".rds",
+save_dir = "~/exomepeak2_guitar_peaks",
+parallel_num = 9,
+report_function = guitar_plot
+)
+```
+
 
 
