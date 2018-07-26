@@ -56,8 +56,14 @@ parallel_report <- function(
            report_function,
            front_name = front_name)
 
+  job_names <- gsub(".*\\/", "", file_pkc_results )
+
+  job_names <- gsub( pkc_suffix, "", job_names)
+
+  job_names <- gsub(pkc_prefix, "", job_names)
+
   #save R scripts on the system ( The following part is the same for all of the parallel functions. )
-  Rscript_names <- paste0(front_name, names(code_lst), ".R")
+  Rscript_names <- paste0(front_name, job_names, ".R")
 
   mapply(function(x, y)
     writeLines(x, y),

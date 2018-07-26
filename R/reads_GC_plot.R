@@ -17,6 +17,8 @@ reads_GC_plot <- function(pkc_rds_file,
 
   save_name <- gsub(".rds", "", save_name)
 
+  save_name <- paste0(front_name, save_name)
+
   code_readsGC <- call("plotReadsGC",
                          sep = expr_readRDS,
                          save_pdf_prefix = save_name
@@ -27,7 +29,7 @@ reads_GC_plot <- function(pkc_rds_file,
   code_readsGC[index_last] <- gsub(")$", "", code_readsGC[index_last] )
 
   code_readsGC[index_last] <- paste0(code_readsGC[index_last],
-                                ",bsgenome = Hsapiens, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene)")
+                                ", bsgenome = Hsapiens, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene)")
 
   code_all <- c(code_library, code_readsGC)
 
