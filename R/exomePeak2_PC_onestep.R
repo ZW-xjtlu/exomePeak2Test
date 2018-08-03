@@ -11,8 +11,8 @@ exomePeak2_PC_onestep <- function(coldata,
                     "library(TxDb.Hsapiens.UCSC.hg19.knownGene)",
                     "library(BSgenome.Hsapiens.UCSC.hg19)")
 
-  code_directory <- c( paste0("dir.create(", front_name, coldata$Experiment[1], ")"),
-                       paste0("setwd(", front_name, coldata$Experiment[1], ")" )
+  code_directory <- c( paste0("dir.create('", front_name, coldata$Experiment[1], "')"),
+                       paste0("setwd('", front_name, coldata$Experiment[1], "')" )
   )
 
   bam_files <- paste0( bam_dir, "/", coldata$SRR_RUN, ".bam" )
