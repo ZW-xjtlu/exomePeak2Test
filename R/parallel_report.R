@@ -40,7 +40,7 @@ parallel_report <- function(
 
   file_pkc_results <- grep( pkc_prefix, file_pkc_results, value = T )
 
-  stopifnot(length(file_pkc_results) != 0)
+  stopifnot( length(file_pkc_results) != 0 )
 
   if (!dir.exists(save_dir)) {
     stopifnot(autocreate)

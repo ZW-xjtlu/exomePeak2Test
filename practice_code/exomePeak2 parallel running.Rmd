@@ -55,5 +55,36 @@ report_function = guitar_plot
 )
 ```
 
+refined
 
+```{r}
+library(exomePeak2Test)
+
+parallel_report(
+pkc_dir = "~/exomepeak2_test",
+pkc_prefix = "pkc_",
+pkc_suffix = ".rds",
+save_dir = "~/exomepeak2_guitar_refined_peaks",
+parallel_num = 9,
+front_name = "guitar_",
+report_function = guitar_plot_Meth
+)
+```
+
+###Direct analysis with biocparallel
+
+```{r}
+library(BiocParallel)
+library(exomePeak2)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(BSgenome.Hsapiens.UCSC.hg19)
+
+file_pkc_results <- grep( ".rds", list.files("~/exomepeak2_test"), value = T )
+
+refined_SEP_lst <- bplapply(file_pkc_results, function(x){
+SEP <- readRDS(paste0("~/exomepeak2_test/",x))
+SEP <- GCnormalization(SEP, Hsapiens, TxDb.Hsapiens.UCSC.hg19.knownGene)
+return(glmMeth(SEP))
+})
+```
 
