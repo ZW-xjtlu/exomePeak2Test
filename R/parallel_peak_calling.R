@@ -25,7 +25,7 @@ parallel_peak_calling <- function(coldata,
                                   save_dir = "./",
                                   autocreate = T,
                                   parallel_num = 9,
-                                  pc_function = exomePeak2_PC,
+                                  pc_function = exomePeak2_PC_onestep,
                                   front_name = "pkc_",
                                   ...) {
 
@@ -68,7 +68,8 @@ parallel_peak_calling <- function(coldata,
     lapply(coldata_lst,
            pc_function,
            bam_dir = bam_dir,
-           front_name = front_name)
+           front_name = front_name,
+           ...)
 
   #save R scripts on the system
   Rscript_names <- paste0(front_name, names(code_lst), ".R")

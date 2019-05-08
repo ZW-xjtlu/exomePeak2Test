@@ -11,3 +11,6 @@ Rnohup(command, bashname = "X")
 
 \item{bashname}{the prefix name of files saved under bash.}
 }
+\description{
+submit a bash commands on server background
+}

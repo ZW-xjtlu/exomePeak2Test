@@ -6,3 +6,6 @@
 \usage{
 guitar_plot_Meth(pkc_rds_file, front_name, ...)
 }
+\description{
+Produce code for guitar plot after refined methylation call.
+}

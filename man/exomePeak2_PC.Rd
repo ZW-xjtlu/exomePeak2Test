@@ -6,3 +6,6 @@
 \usage{
 exomePeak2_PC(coldata, bam_dir, front_name, ...)
 }
+\description{
+Produce code for Peak Calling with exomePeak2
+}

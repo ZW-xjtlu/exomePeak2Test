@@ -4,5 +4,9 @@
 \alias{exomePeak2_PC_onestep}
 \title{Produce code for Peak Calling with exomePeak2}
 \usage{
-exomePeak2_PC_onestep(coldata, bam_dir, front_name, ...)
+exomePeak2_PC_onestep(coldata, bam_dir, front_name, single_base = FALSE,
+  ...)
+}
+\description{
+Produce code for Peak Calling with exomePeak2
 }

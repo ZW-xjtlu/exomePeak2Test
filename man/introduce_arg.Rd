@@ -11,3 +11,6 @@ introduce_arg(code, arguments)
 
 \item{arguments}{a character vector with names being the arguments and entries being the inputs.}
 }
+\description{
+Introduce argument into a code chunk.
+}

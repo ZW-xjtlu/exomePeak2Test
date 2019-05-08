@@ -31,6 +31,9 @@ parallel_report(pkc_dir = "~/exomepeak2_test", pkc_prefix = "pkc_",
 \value{
 multiple report files on peak calling results, which will use the same middle name.
 }
+\description{
+Run reports on peak callings in parallel with bash sever.
+}
 \examples{
 parallel_report(
  pkc_dir = "~/exomepeak2_test"

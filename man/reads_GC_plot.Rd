@@ -6,3 +6,6 @@
 \usage{
 reads_GC_plot(pkc_rds_file, front_name, ...)
 }
+\description{
+Produce code for gc content plot.
+}

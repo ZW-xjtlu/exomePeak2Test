@@ -6,3 +6,6 @@
 \usage{
 guitar_plot(pkc_rds_file, front_name, ...)
 }
+\description{
+Produce code for guitar plot
+}

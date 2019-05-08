@@ -12,7 +12,7 @@ guitar_plot_Meth <- function(pkc_rds_file,
   expr_readRDS <- call("readRDS",
                        file = pkc_rds_file)
 
-  code_GC_norm <- call("GCnormalization",
+  code_GC_norm <- call("gcNormalization",
                        sep = expr_readRDS) %>% deparse
 
   arguments_annotation <- c("Hsapiens", "TxDb.Hsapiens.UCSC.hg19.knownGene")

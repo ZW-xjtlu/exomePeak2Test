@@ -14,12 +14,14 @@ library(exomePeak2Test)
 
 ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
 
+ColData_hg19 <- read.csv("coldata_hg19.csv")
+
 parallel_peak_calling(
 coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
 bam_dir = "~/merip_bam",
 save_dir = "~/exomepeak2_test",
 parallel_num = 9,
-pc_function = exomePeak2_PC
+single_base = T
 )
 ```
 
