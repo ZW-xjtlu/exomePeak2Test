@@ -21,7 +21,7 @@ exomePeak2_PC_onestep <- function(coldata,
   if(!single_base) {
    code_annot <- "sb_gr = NULL"
   }else{
-   code_annot <- 'sb_gr = system.file("extdata", "m6A_hg19_annot.rds", package = "exomePeak2")'
+   code_annot <- 'sb_gr = readRDS(system.file("extdata", "m6A_hg19_annot.rds", package = "exomePeak2"))'
   }
 
   bam_files <- paste0( bam_dir, "/", coldata$SRR_RUN, ".bam" )
