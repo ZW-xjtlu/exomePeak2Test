@@ -5,8 +5,7 @@
 exomePeak2_PC_onestep <- function(coldata,
                           bam_dir,
                           front_name,
-                          single_base = FALSE,
-                          ...
+                          single_base = FALSE
                           ){
 
   #Create specific representation of those code.
@@ -32,8 +31,7 @@ exomePeak2_PC_onestep <- function(coldata,
                        bam_input = bam_files[coldata$IP_input == "input"],
                        paired_end = all(coldata$Lib == "Paired"),
                        export_format = "CSV",
-                       save_plot_analysis = T,
-                   ...
+                       save_plot_analysis = T
   ) %>% deparse
 
   arguments_plot <- c("Hsapiens","TxDb.Hsapiens.UCSC.hg19.knownGene","sb_gr")
