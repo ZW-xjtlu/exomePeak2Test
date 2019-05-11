@@ -2,20 +2,22 @@
 #'@import magrittr
 #'@import exomePeak2
 #'@export
-exomePeak2_PC_onestep <- function(coldata,
+exomePeak2_hg19 <- function(
+                          coldata,
                           bam_dir,
                           front_name,
-                          single_base = FALSE
-                          ){
+                          single_base = FALSE,
+                          GC_correct = TRUE
+                          ) {
 
   #Create specific representation of those code.
-
   code_library <- c("library(exomePeak2)",
                     "library(TxDb.Hsapiens.UCSC.hg19.knownGene)",
                     "library(BSgenome.Hsapiens.UCSC.hg19)")
 
-  code_directory <- c( paste0("dir.create('", front_name, coldata$Experiment[1], "')"),
-                       paste0("setwd('", front_name, coldata$Experiment[1], "')" )
+  code_directory <- c(
+    paste0("dir.create('", front_name, coldata$Experiment[1], "')"),
+    paste0("setwd('", front_name, coldata$Experiment[1], "')" )
   )
 
   if(!single_base) {
@@ -34,7 +36,9 @@ exomePeak2_PC_onestep <- function(coldata,
                        save_plot_analysis = T
   ) %>% deparse
 
-  arguments_plot <- c("Hsapiens","TxDb.Hsapiens.UCSC.hg19.knownGene","sb_gr")
+  arguments_plot <- c( ifelse(GC_correct,"Hsapiens","NULL"),
+                       "TxDb.Hsapiens.UCSC.hg19.knownGene",
+                       "sb_gr" )
 
   names(arguments_plot) <- c("bsgenome", "txdb", "mod_annot")
 

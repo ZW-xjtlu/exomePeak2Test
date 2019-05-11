@@ -25,9 +25,10 @@ parallel_peak_calling <- function(coldata,
                                   save_dir = "./",
                                   autocreate = T,
                                   parallel_num = 9,
-                                  pc_function = exomePeak2_PC_onestep,
+                                  pc_function = exomePeak2_hg19,
                                   front_name = "pkc_",
-                                  single_base = F) {
+                                  single_base = F,
+                                  GC_correct = T) {
 
   #check directories
   bam_dir <- gsub("/$", "", bam_dir)
@@ -69,7 +70,8 @@ parallel_peak_calling <- function(coldata,
            pc_function,
            bam_dir = bam_dir,
            front_name = front_name,
-           single_base = single_base)
+           single_base = single_base,
+           GC_correct = GC_correct)
 
   #save R scripts on the system
   Rscript_names <- paste0(front_name, names(code_lst), ".R")

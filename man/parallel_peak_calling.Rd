@@ -5,9 +5,8 @@
 \title{Run peak callings in parallel on bash sever}
 \usage{
 parallel_peak_calling(coldata, bam_dir = "./", save_dir = "./",
-  autocreate = T, parallel_num = 9,
-  pc_function = exomePeak2_PC_onestep, front_name = "pkc_",
-  single_base = F)
+  autocreate = T, parallel_num = 9, pc_function = exomePeak2_hg19,
+  front_name = "pkc_", single_base = F, GC_correct = T)
 }
 \arguments{
 \item{coldata}{a \code{data.frame} which it columns containing the design information.}

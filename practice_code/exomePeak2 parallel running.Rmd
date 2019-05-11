@@ -9,6 +9,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##submit exomepeak2 peakcalling on server
 
+- Test peak calling functions
+
 ```{r}
 library(exomePeak2Test)
 
@@ -17,9 +19,51 @@ ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
 parallel_peak_calling(
 coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
 bam_dir = "~/merip_bam",
-save_dir = "~/exomepeak2_test",
+save_dir = "~/exomepeak2_test/test_pc",
 parallel_num = 9,
+single_base = F
+)
+
+
+library(exomePeak2Test)
+
+ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
+
+parallel_peak_calling(
+coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_annot",
+parallel_num = 9,
+front_name = "annot_",
 single_base = T
+)
+
+library(exomePeak2Test)
+
+ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
+
+parallel_peak_calling(
+coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_annot",
+parallel_num = 9,
+front_name = "pc_unifGC_",
+single_base = F
+)
+
+
+library(exomePeak2Test)
+
+ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
+
+parallel_peak_calling(
+coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/pc_noGC",
+parallel_num = 9,
+front_name = "pc_noGC_",
+single_base = F,
+GC_correct = F
 )
 ```
 
