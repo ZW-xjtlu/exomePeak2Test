@@ -8,6 +8,7 @@ exomePeak2_hg19 <- function(
                           front_name,
                           single_base = FALSE,
                           GC_correct = TRUE,
+                          correct_GC_bg = FALSE,
                           background = "Gaussian_mixture"
                           ) {
 
@@ -33,6 +34,7 @@ exomePeak2_hg19 <- function(
                        bam_ip = bam_files[coldata$IP_input == "IP"],
                        bam_input = bam_files[coldata$IP_input == "input"],
                        paired_end = all(coldata$Lib == "Paired"),
+                       correct_GC_bg = correct_GC_bg,
                        background = background,
                        export_format = "CSV",
                        save_plot_analysis = T

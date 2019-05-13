@@ -29,6 +29,7 @@ parallel_peak_calling <- function(coldata,
                                   front_name = "pkc_",
                                   single_base = F,
                                   GC_correct = T,
+                                  correct_GC_bg = F,
                                   background = "Gaussian_mixture") {
 
   #check directories
@@ -72,7 +73,8 @@ parallel_peak_calling <- function(coldata,
            bam_dir = bam_dir,
            front_name = front_name,
            single_base = single_base,
-           GC_correct = GC_correct)
+           GC_correct = GC_correct,
+           correct_GC_bg = correct_GC_bg)
 
   #save R scripts on the system
   Rscript_names <- paste0(front_name, names(code_lst), ".R")
