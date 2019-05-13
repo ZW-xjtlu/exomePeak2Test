@@ -19,7 +19,7 @@ ColData_hg19 <- read.csv("~/merip_bam/coldata_hg19.csv")
 parallel_peak_calling(
 coldata = ColData_hg19[ColData_hg19$Perturbation == "C",],
 bam_dir = "~/merip_bam",
-save_dir = "~/exomepeak2_test/test_pc",
+save_dir = "~/exomepeak2_test/test_pc_gmmGC",
 parallel_num = 9,
 single_base = F
 )
@@ -67,68 +67,52 @@ GC_correct = F
 )
 ```
 
-Report the peak calling results, e.x. stored summarizedExomePeaks object and analyze it in certain ways.
-
-```{bash}
-library(exomePeak2Test)
-
-parallel_report(
-pkc_dir = "~/exomepeak2_test",
-pkc_prefix = "pkc_",
-pkc_suffix = ".rds",
-save_dir = "~/exomepeak2_GC_peaks",
-parallel_num = 9,
-report_function = reads_GC_plot
-)
-```
-
-
-plot guitars
 
 ```{r}
 library(exomePeak2Test)
+dir.create("~/exomepeak2_test/test_pc_m6Aprior_noGC")
+dir.create("~/exomepeak2_test/test_pc_m6Aprior_uniformGC")
+dir.create("~/exomepeak2_test/test_pc_m6Aprior_bgGC")
 
-parallel_report(
-pkc_dir = "~/exomepeak2_test",
-pkc_prefix = "pkc_",
-pkc_suffix = ".rds",
-save_dir = "~/exomepeak2_guitar_peaks",
-parallel_num = 9,
-front_name = "guitar_",
-report_function = guitar_plot
+ColData_test <- read.csv("~/exomepeak2_test/coldata_hg19_test.csv")
+
+setwd("~/exomepeak2_test/test_pc_m6Aprior_noGC")
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_m6Aprior_noGC",
+parallel_num = 2,
+single_base = F,
+background = "m6Aseq_prior",
+GC_correct = F,
+correct_GC_bg = F
 )
-```
 
-refined
+setwd("~/exomepeak2_test/test_pc_m6Aprior_uniformGC")
 
-```{r}
-library(exomePeak2Test)
-
-parallel_report(
-pkc_dir = "~/exomepeak2_test",
-pkc_prefix = "pkc_",
-pkc_suffix = ".rds",
-save_dir = "~/exomepeak2_guitar_refined_peaks",
-parallel_num = 9,
-front_name = "guitar_",
-report_function = guitar_plot_Meth
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_m6Aprior_uniformGC",
+parallel_num = 2,
+single_base = F,
+background = "m6Aseq_prior",
+GC_correct = T,
+correct_GC_bg = F
 )
-```
 
-###Direct analysis with biocparallel
+setwd("~/exomepeak2_test/test_pc_m6Aprior_bgGC")
 
-```{r}
-library(BiocParallel)
-library(exomePeak2)
-library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-library(BSgenome.Hsapiens.UCSC.hg19)
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_m6Aprior_bgGC",
+parallel_num = 2,
+single_base = F,
+background = "m6Aseq_prior",
+GC_correct = T,
+correct_GC_bg = T
+)
 
-file_pkc_results <- grep( ".rds", list.files("~/exomepeak2_test"), value = T )
-
-refined_SEP_lst <- bplapply(file_pkc_results, function(x){
-SEP <- readRDS(paste0("~/exomepeak2_test/",x))
-SEP <- GCnormalization(SEP, Hsapiens, TxDb.Hsapiens.UCSC.hg19.knownGene)
-return(glmMeth(SEP))
-})
 ```
 

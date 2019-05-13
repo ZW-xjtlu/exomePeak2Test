@@ -28,7 +28,8 @@ parallel_peak_calling <- function(coldata,
                                   pc_function = exomePeak2_hg19,
                                   front_name = "pkc_",
                                   single_base = F,
-                                  GC_correct = T) {
+                                  GC_correct = T,
+                                  background = "Gaussian_mixture") {
 
   #check directories
   bam_dir <- gsub("/$", "", bam_dir)

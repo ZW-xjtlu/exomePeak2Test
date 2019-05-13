@@ -5,7 +5,7 @@
 \title{Produce code for Peak Calling with exomePeak2}
 \usage{
 exomePeak2_hg19(coldata, bam_dir, front_name, single_base = FALSE,
-  GC_correct = TRUE)
+  GC_correct = TRUE, background = "Gaussian_mixture")
 }
 \description{
 Produce code for Peak Calling with exomePeak2

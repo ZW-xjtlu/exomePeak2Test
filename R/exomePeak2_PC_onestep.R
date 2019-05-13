@@ -7,7 +7,8 @@ exomePeak2_hg19 <- function(
                           bam_dir,
                           front_name,
                           single_base = FALSE,
-                          GC_correct = TRUE
+                          GC_correct = TRUE,
+                          background = "Gaussian_mixture"
                           ) {
 
   #Create specific representation of those code.
@@ -32,6 +33,7 @@ exomePeak2_hg19 <- function(
                        bam_ip = bam_files[coldata$IP_input == "IP"],
                        bam_input = bam_files[coldata$IP_input == "input"],
                        paired_end = all(coldata$Lib == "Paired"),
+                       background = background,
                        export_format = "CSV",
                        save_plot_analysis = T
   ) %>% deparse

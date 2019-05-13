@@ -6,7 +6,8 @@
 \usage{
 parallel_peak_calling(coldata, bam_dir = "./", save_dir = "./",
   autocreate = T, parallel_num = 9, pc_function = exomePeak2_hg19,
-  front_name = "pkc_", single_base = F, GC_correct = T)
+  front_name = "pkc_", single_base = F, GC_correct = T,
+  background = "Gaussian_mixture")
 }
 \arguments{
 \item{coldata}{a \code{data.frame} which it columns containing the design information.}
