@@ -9,7 +9,8 @@ exomePeak2_hg19 <- function(
                           single_base = FALSE,
                           GC_correct = TRUE,
                           correct_GC_bg = FALSE,
-                          background = "Gaussian_mixture"
+                          background = "Gaussian_mixture",
+                          qtnorm = TRUE
                           ) {
 
   #Create specific representation of those code.
@@ -36,6 +37,7 @@ exomePeak2_hg19 <- function(
                        paired_end = all(coldata$Lib == "Paired"),
                        correct_GC_bg = correct_GC_bg,
                        background = background,
+                       qtnorm = qtnorm,
                        export_format = "CSV",
                        save_plot_analysis = T
   ) %>% deparse

@@ -81,12 +81,12 @@ parallel_peak_calling(
 coldata = ColData_test,
 bam_dir = "~/merip_bam",
 save_dir = "~/exomepeak2_test/test_pc_m6Aprior_noGC",
-parallel_num = 2,
+parallel_num = 3,
 single_base = F,
 background = "m6Aseq_prior",
 GC_correct = F,
 correct_GC_bg = F
-)
+) #Submmited 10:13 AM
 
 setwd("~/exomepeak2_test/test_pc_m6Aprior_uniformGC")
 
@@ -110,6 +110,82 @@ save_dir = "~/exomepeak2_test/test_pc_m6Aprior_bgGC",
 parallel_num = 2,
 single_base = F,
 background = "m6Aseq_prior",
+GC_correct = T,
+correct_GC_bg = T
+)
+
+```
+
+
+
+#Test RDEMPTION
+
+```{r}
+library(exomePeak2Test)
+
+ColData_test <- read.csv("~/exomepeak2_test/coldata_hg19_test.csv")
+
+dir.create("~/exomepeak2_test/test_pc_GMMgc")
+
+setwd("~/exomepeak2_test/test_pc_GMMgc")
+
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_redemption2",
+parallel_num = 2,
+single_base = F,
+background = "Gaussian_mixture",
+GC_correct = T,
+correct_GC_bg = T
+)
+
+
+library(exomePeak2Test)
+
+ColData_test <- read.csv("~/exomepeak2_test/coldata_hg19_test.csv")
+
+dir.create("~/exomepeak2_test/test_pc_GMMgc")
+
+setwd("~/exomepeak2_test/test_pc_GMMgc")
+
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_GMMgc",
+parallel_num = 2,
+single_base = F,
+background = "m6Aseq_prior",
+GC_correct = T,
+correct_GC_bg = T
+)
+
+dir.create("~/exomepeak2_test/test_pc_m6APgc")
+
+setwd("~/exomepeak2_test/test_pc_m6APgc")
+
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_m6APgc",
+parallel_num = 2,
+single_base = F,
+background = "m6Aseq_prior",
+GC_correct = T,
+correct_GC_bg = T
+)
+
+dir.create("~/exomepeak2_test/test_pc_UNIFgc")
+
+setwd("~/exomepeak2_test/test_pc_UNIFgc")
+
+parallel_peak_calling(
+coldata = ColData_test,
+bam_dir = "~/merip_bam",
+save_dir = "~/exomepeak2_test/test_pc_UNIFgc",
+parallel_num = 2,
+single_base = F,
+background = "all",
 GC_correct = T,
 correct_GC_bg = T
 )
