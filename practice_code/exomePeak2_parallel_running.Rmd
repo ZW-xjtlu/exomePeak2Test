@@ -77,7 +77,6 @@ dir.create("~/exomepeak2_test/test_pc_m6Aprior_bgGC")
 ColData_test <- read.csv("~/exomepeak2_test/coldata_hg19_test.csv")
 
 setwd("~/exomepeak2_test/test_pc_m6Aprior_noGC")
-
 parallel_peak_calling(
 coldata = ColData_test,
 bam_dir = "~/merip_bam",
@@ -193,58 +192,4 @@ correct_GC_bg = T
 
 ```
 
-
-```{r}
-library(exomePeak2Test)
-
-ColData_test <- read.csv("~/exomepeak2_test/coldata_hg19_test.csv")
-
-dir.create("~/exomepeak2_test/test_pc_GMMgc_noqtnorm")
-
-setwd("~/exomepeak2_test/test_pc_GMMgc_noqtnorm")
-
-parallel_peak_calling(
-coldata = ColData_test,
-bam_dir = "~/merip_bam",
-save_dir = "~/exomepeak2_test/test_pc_GMMgc_noqtnorm",
-parallel_num = 2,
-single_base = F,
-background = "m6Aseq_prior",
-GC_correct = T,
-correct_GC_bg = T,
-qtnorm = F
-)
-
-dir.create("~/exomepeak2_test/test_pc_m6APgc_noqtnorm")
-
-setwd("~/exomepeak2_test/test_pc_m6APgc_noqtnorm")
-
-parallel_peak_calling(
-coldata = ColData_test,
-bam_dir = "~/merip_bam",
-save_dir = "~/exomepeak2_test/test_pc_m6APgc_noqtnorm",
-parallel_num = 2,
-single_base = F,
-background = "m6Aseq_prior",
-GC_correct = T,
-correct_GC_bg = T,
-qtnorm = F
-)
-
-dir.create("~/exomepeak2_test/test_pc_UNIFgc_noqtnorm")
-
-setwd("~/exomepeak2_test/test_pc_UNIFgc_noqtnorm")
-
-parallel_peak_calling(
-coldata = ColData_test,
-bam_dir = "~/merip_bam",
-save_dir = "~/exomepeak2_test/test_pc_UNIFgc_noqtnorm",
-parallel_num = 2,
-single_base = F,
-background = "all",
-GC_correct = T,
-correct_GC_bg = T,
-qtnorm = F
-)
-```
 
