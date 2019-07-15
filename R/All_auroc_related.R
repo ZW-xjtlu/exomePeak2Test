@@ -275,10 +275,11 @@ get_pred_list <- function(SE_Peak_counts,
                                         fold = 1)
       fdr_M <-  cbind(fdr_M,test_result$fdr)
       logFC_M <- cbind(logFC_M,test_result$log2FC)
-      pvalue_M <- cbind(logFC_M,test_result$pvalue)
+      pvalue_M <- cbind(pvalue_M,test_result$pvalue)
     }
   }
 
+  pvalue_M <- pvalue_M[,-1]
   logFC_M <- logFC_M[,-1]
   fdr_M <- fdr_M[,-1]
 
@@ -324,13 +325,13 @@ save_predict_peakcalling <- function(BAM_IP,BAM_INPUT,TXDB,BSGNM,PAIRED = FALSE,
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
-                bsgenome = NULL,
+                bsgenome = BSGNM,
                 background = "m6Aseq_prior",
                 qtnorm = FALSE)  %>% saveRDS(.,paste0(TITLE,"_priorGC.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
-                bsgenome = NULL,
+                bsgenome = BSGNM,
                 background = "m6Aseq_prior",
                 qtnorm = TRUE)  %>% saveRDS(.,paste0(TITLE,"_priorGC_qtnorm.rds"))
 
