@@ -89,7 +89,7 @@ PRC_df <- function(result_lst, gt_gr, N = 60, group_name = "prc") {
   cutoff <- quantile(pred_cfdr, seq(0,1,length.out = N), na.rm = TRUE)
 
   for(i in 1:N){
-    pred_P <- pc_gr[rowSums( pred_cfdr > cutoff[i] ) >= qbinom(0.95,ncol(pred_cfdr),0.8)]
+    pred_P <- pc_gr[rowSums( cbind( pred_cfdr > cutoff[i] ) ) >= qbinom(0.95,ncol(cbind(pred_cfdr)),0.8)]
     vec_pcc[i] <- mean(pred_P %over% gt_gr)
     vec_recall[i] <- mean(gt_gr %over% pred_P)
   }
@@ -138,7 +138,7 @@ PRC_df <- function(result_lst, gt_gr, N = 60, group_name = "prc") {
   cutoff <- quantile(pred_clfc, seq(0,1,length.out = N), na.rm = TRUE)
 
   for(i in 1:N){
-    pred_P <- pc_gr[rowSums( pred_clfc > cutoff[i] ) >= qbinom(0.95,ncol(pred_clfc),0.8)]
+    pred_P <- pc_gr[rowSums( cbind( pred_clfc > cutoff[i] ) ) >= qbinom(0.95,ncol(cbind(pred_clfc)),0.8)]
     vec_pcc[i] <- mean(pred_P %over% gt_gr)
     vec_recall[i] <- mean(gt_gr %over% pred_P)
   }
@@ -157,10 +157,10 @@ PRC_df <- function(result_lst, gt_gr, N = 60, group_name = "prc") {
   ######################################################################
   #        precision-recall for a combination of several metrics       #
   ######################################################################
-  #under default setting
-  indx_ctest_lfc <- rowSums( result_lst$cons_log2FC_M > 1 ) >= qbinom(0.95, ncol(result_lst$cons_log2FC_M), 0.8)
 
-  indx_ctest_pvalue <- rowSums( pred_cfdr > -log10(0.05) ) >= qbinom(0.95, ncol(pred_cfdr), 0.8)
+  indx_ctest_lfc <- rowSums( cbind(result_lst$cons_log2FC_M > 1) ) >= qbinom(0.95, ncol(cbind(result_lst$cons_log2FC_M)), 0.8)
+
+  indx_ctest_pvalue <- rowSums( cbind( pred_cfdr > -log10(0.05) ) ) >= qbinom(0.95, ncol(cbind(pred_cfdr)), 0.8)
 
   pval_subset <- result_lst$DESeq2Results$pvalue[indx_ctest_lfc&indx_ctest_pvalue]
 

@@ -56,11 +56,11 @@ get_pred_list <- function(SE_Peak_counts,
                           txdb,
                           bsgenome = NULL,
                           background = "Gaussian_mixture",
-                          qtnorm = TRUE){
+                          qtnorm = TRUE,
+                          glm_type = "DESeq2"){
   require(exomePeak2)
   require(DESeq2)
   require(cqn)
-  glm_type = "DESeq2"
   pc_count_cutoff = 5
   bg_count_cutoff = 50
   correct_GC_bg = TRUE
@@ -296,7 +296,8 @@ get_pred_list <- function(SE_Peak_counts,
 #' @rdname save_predict_peakcalling
 #' @export
 
-save_predict_peakcalling <- function(BAM_IP,BAM_INPUT,TXDB,BSGNM,PAIRED = FALSE,TITLE = "m6a"){
+save_predict_peakcalling <- function(BAM_IP,BAM_INPUT,TXDB,BSGNM,PAIRED = FALSE,TITLE = "m6a",
+                                     GLM_TYPE = "DESeq2"){
 
   require(magrittr)
 
@@ -309,42 +310,49 @@ save_predict_peakcalling <- function(BAM_IP,BAM_INPUT,TXDB,BSGNM,PAIRED = FALSE,
                 txdb = TXDB,
                 bsgenome = NULL,
                 background = "all",
-                qtnorm = FALSE)  %>% saveRDS(.,paste0(TITLE,"_noGC.rds"))
+                qtnorm = FALSE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_noGC.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "Gaussian_mixture",
-                qtnorm = FALSE)  %>% saveRDS(.,paste0(TITLE,"_mclustGC.rds"))
+                qtnorm = FALSE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_mclustGC.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "Gaussian_mixture",
-                qtnorm = TRUE)  %>% saveRDS(.,paste0(TITLE,"_mclustGC_qtnorm.rds"))
+                qtnorm = TRUE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_mclustGC_qtnorm.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "m6Aseq_prior",
-                qtnorm = FALSE)  %>% saveRDS(.,paste0(TITLE,"_priorGC.rds"))
+                qtnorm = FALSE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_priorGC.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "m6Aseq_prior",
-                qtnorm = TRUE)  %>% saveRDS(.,paste0(TITLE,"_priorGC_qtnorm.rds"))
+                qtnorm = TRUE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_priorGC_qtnorm.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "all",
-                qtnorm = FALSE)  %>% saveRDS(.,paste0(TITLE,"_uniformGC.rds"))
+                qtnorm = FALSE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_uniformGC.rds"))
 
   get_pred_list(SE_Peak_counts = ReadCount,
                 txdb = TXDB,
                 bsgenome = BSGNM,
                 background = "all",
-                qtnorm = TRUE)  %>% saveRDS(.,paste0(TITLE,"_uniformGC_qtnorm.rds"))
+                qtnorm = TRUE,
+                glm_type = GLM_TYPE)  %>% saveRDS(.,paste0(TITLE,"_uniformGC_qtnorm.rds"))
 
 }

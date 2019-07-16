@@ -7,6 +7,7 @@
 #'@param ground_truce_gr a GRanges for the ground truce of positive methylation sites, recommended to be in single based resolution.
 #'@param N number of points sampled for each PRC curve; default = 200.
 #'@param exp_label a character for the label of the experiment; default = "MeRIP_experiment_1".
+#'@param glm_type type of GLM fit when peak calling; default = "DESeq2".
 #'@return The table for AUPRC and the AUROC curve will be saved on the disc under a folder named by exp_label.
 #'
 #'@examples
@@ -44,7 +45,8 @@ OneStep_PRC <- function(bam_ip,
                         paired_end = FALSE,
                         ground_truce_gr,
                         exp_label = "MeRIP_experiment_1",
-                        N = 200){
+                        N = 200,
+                        glm_type = "DESeq2"){
 if(!dir.exists(exp_label)){
   dir.create(exp_label)
 }
@@ -54,7 +56,8 @@ save_predict_peakcalling(BAM_IP = bam_ip,
                          TXDB = txdb,
                          BSGNM = bsgenome,
                          PAIRED = paired_end,
-                         TITLE = file.path(exp_label,"Temp"))
+                         TITLE = file.path(exp_label,"Temp"),
+                         GLM_TYPE = glm_type)
 
 prc_df_nogc <- PRC_df(readRDS(file.path(exp_label,"Temp_noGC.rds")), ground_truce_gr, N = N, group_name = "no GC")
 unlink(file.path(exp_label,"Temp_noGC.rds"))

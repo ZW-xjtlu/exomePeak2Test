@@ -6,7 +6,7 @@
 \usage{
 OneStep_PRC(bam_ip, bam_input, txdb, bsgenome = NULL,
   paired_end = FALSE, ground_truce_gr,
-  exp_label = "MeRIP_experiment_1", N = 200)
+  exp_label = "MeRIP_experiment_1", N = 200, glm_type = "DESeq2")
 }
 \arguments{
 \item{bam_ip}{a vector containing the BAM files for IP samples.}
@@ -24,6 +24,8 @@ OneStep_PRC(bam_ip, bam_input, txdb, bsgenome = NULL,
 \item{exp_label}{a character for the label of the experiment; default = "MeRIP_experiment_1".}
 
 \item{N}{number of points sampled for each PRC curve; default = 200.}
+
+\item{glm_type}{type of GLM fit when peak calling; default = "DESeq2".}
 }
 \value{
 The table for AUPRC and the AUROC curve will be saved on the disc under a folder named by exp_label.
