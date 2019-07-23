@@ -22,7 +22,7 @@ write_macs2_code <- function( bam_ip, bam_input, name ) {
                   bam_ip,
                   "-c",
                   bam_input,
-                  paste0("-f BAM -g hs -n ", name, " -B -q 0.9999"))
+                  paste0("-f BAM -g hs -n ", name, " -B -p 0.9999"))
 
  code_lines <- paste(code_lines, "\\")
 
