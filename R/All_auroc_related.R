@@ -49,15 +49,6 @@ get_reads_count <- function(bam_ip,
 
   colData(SE_Peak_counts) <- DataFrame(metadata(merip_bams))
 
-  rowData_tmp <- rowData(SE_Peak_counts)
-
-  rowRanges(SE_Peak_counts) <-
-    exome_bins_grl[as.numeric(rownames(SE_Peak_counts))]
-
-  rowData(SE_Peak_counts) <- rowData_tmp
-
-  rm(exome_bins_grl,rowData_tmp)
-
   return(SE_Peak_counts)
 }
 
