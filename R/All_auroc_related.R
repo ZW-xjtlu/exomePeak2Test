@@ -15,7 +15,7 @@ get_reads_count <- function(bam_ip,
     paired_end = paired_end
   )
 
-  exome_bins_grl <- exome_bins_from_txdb(
+  exome_bins_grl <- exomePeak2:::exome_bins_from_txdb(
     txdb = txdb,
     window_size = binding_length,
     step_size = step_length

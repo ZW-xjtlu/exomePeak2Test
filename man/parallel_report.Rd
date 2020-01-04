@@ -4,10 +4,16 @@
 \alias{parallel_report}
 \title{Run reports on peak callings in parallel with bash sever.}
 \usage{
-parallel_report(pkc_dir = "~/exomepeak2_test", pkc_prefix = "pkc_",
-  pkc_suffix = ".rds", autocreate = TRUE,
-  save_dir = "~/exomepeak2_GC_peaks", parallel_num = 9,
-  report_function = reads_GC_plot, front_name = "GCreads_")
+parallel_report(
+  pkc_dir = "~/exomepeak2_test",
+  pkc_prefix = "pkc_",
+  pkc_suffix = ".rds",
+  autocreate = TRUE,
+  save_dir = "~/exomepeak2_GC_peaks",
+  parallel_num = 9,
+  report_function = reads_GC_plot,
+  front_name = "GCreads_"
+)
 }
 \arguments{
 \item{pkc_dir}{the directory containing the Peak calling results in RDS format.}
