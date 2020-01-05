@@ -199,7 +199,7 @@ get_pred_list_mayer <- function(SE_Peak_counts,
 
   return(list(
     dds = dds,
-    cons_fdr_M = fdr_M
+    cons_fdr_M = -log(fdr_M) #PS!
   ))
 
 }

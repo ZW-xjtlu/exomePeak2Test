@@ -17,10 +17,11 @@ MOD_ANNO_GRANGE <- readRDS(f2)
 GENE_ANNO_GTF = system.file("extdata", "example.gtf", package="exomePeak2")
 
 whistle_gr <- readRDS("whistle_gr.rds")
+
 #Human embryo sterm cell control
 OneStep_PRC_Mayer(bam_ip = IP_BAM,
                   bam_input = INPUT_BAM ,
-                  txdb = txdb,
+                  txdb = makeTxDbFromGFF(GENE_ANNO_GTF),
                   paired_end = FALSE,
                   ground_truce_gr = whistle_gr[whistle_gr$prob > 0.5],
                   exp_label = "hESC_C",
