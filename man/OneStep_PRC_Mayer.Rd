@@ -8,6 +8,7 @@ OneStep_PRC_Mayer(
   bam_ip,
   bam_input,
   txdb,
+  bsgenome = NULL,
   paired_end = FALSE,
   ground_truce_gr,
   exp_label = "MeRIP_experiment_1",
@@ -21,6 +22,8 @@ OneStep_PRC_Mayer(
 
 \item{txdb}{a TxDb object for the transcript annotation.}
 
+\item{bsgenome}{a BSgenome object for the genome sequence.}
+
 \item{paired_end}{a logical value indicating wheather the data is paired end sequencing; default = FALSE.}
 
 \item{ground_truce_gr}{a GRanges for the ground truce of positive methylation sites, recommended to be in single based resolution.}
@@ -28,8 +31,6 @@ OneStep_PRC_Mayer(
 \item{exp_label}{a character for the label of the experiment; default = "MeRIP_experiment_1".}
 
 \item{N}{number of points sampled for each PRC curve; default = 200.}
-
-\item{bsgenome}{a BSgenome object for the genome sequence.}
 }
 \value{
 The table for AUPRC and the AUROC curve will be saved on the disc under a folder named by exp_label.

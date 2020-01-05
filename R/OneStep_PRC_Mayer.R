@@ -40,6 +40,7 @@
 OneStep_PRC_Mayer <- function(bam_ip,
                               bam_input,
                               txdb,
+                              bsgenome = NULL,
                               paired_end = FALSE,
                               ground_truce_gr,
                               exp_label = "MeRIP_experiment_1",
@@ -51,6 +52,7 @@ OneStep_PRC_Mayer <- function(bam_ip,
   save_predict_peakcalling_mayer(BAM_IP = bam_ip,
                            BAM_INPUT = bam_input,
                            TXDB = txdb,
+                           BSGNM = bsgenome,
                            PAIRED = paired_end,
                            TITLE = file.path(exp_label,"Temp"))
 
@@ -63,7 +65,8 @@ OneStep_PRC_Mayer <- function(bam_ip,
   pc_gr <- resize(pc_gr,201,fix = "center")
 
   pred_cfdr <- result_lst$cons_fdr_M
-  pred_cfdr[is.na(pred_cfdr)] <- 1
+  pred_cfdr[is.na(pred_cfdr)] <- 0
+  pred_cfdr[pred_cfdr == Inf] <- max(pred_cfdr[pred_cfdr != Inf])
 
   vec_pcc <- rep(NA,N)
   vec_recall <- rep(NA,N)
@@ -71,7 +74,7 @@ OneStep_PRC_Mayer <- function(bam_ip,
   cutoff <- quantile(pred_cfdr, seq(0,1,length.out = N), na.rm = TRUE)
 
   for(i in 1:N){
-    pred_P <- pc_gr[rowSums( cbind( pred_cfdr > cutoff[i] ) ) >= qbinom(0.95,ncol(cbind(pred_cfdr)),0.8)]
+    pred_P <- pc_gr[rowSums( cbind( pred_cfdr >= cutoff[i] ) ) >= qbinom(0.95,ncol(cbind(pred_cfdr)),0.8)]
     vec_pcc[i] <- mean(pred_P %over% gt_gr)
     vec_recall[i] <- mean(gt_gr %over% pred_P)
   }
@@ -123,6 +126,7 @@ OneStep_PRC_Mayer <- function(bam_ip,
 }
 
 get_pred_list_mayer <- function(SE_Peak_counts,
+                                bsgenome,
                                 txdb) {
   require(exomePeak2)
   require(DESeq2)
@@ -137,13 +141,20 @@ get_pred_list_mayer <- function(SE_Peak_counts,
     step_size = step_length
   )
 
+  if (is.null(bsgenome)) {} else {
+    flanked_gr <- unlist(rowRanges(SE_Peak_counts))
+    names(flanked_gr) <- gsub("\\..*$", "", names(flanked_gr))
+    GC_freq <- as.vector(letterFrequency(Views(bsgenome, flanked_gr), letters = "CG"))
+    sum_freq <- tapply(GC_freq, names(flanked_gr), sum)
+    sum_freq <- sum_freq[names(rowRanges(SE_Peak_counts))]
+    rowData(SE_Peak_counts)$gc_contents <-
+      sum_freq / sum(width(rowRanges(SE_Peak_counts)))
+    rm(flanked_gr, GC_freq, sum_freq)
+  }
+
   #Bin width calculation
   rowData(SE_Peak_counts)$region_widths <-
     sum(width(rowRanges(SE_Peak_counts)))
-
-  #Count cutoff index
-  rowData(SE_Peak_counts)$indx_gc_est <-
-    rowMeans(assay(SE_Peak_counts)) >= bg_count_cutoff
 
   #Define background using prior knowledge of m6A topology
 
@@ -183,15 +194,76 @@ get_pred_list_mayer <- function(SE_Peak_counts,
   ######################################################
   #               Size factor estimation               #
   ######################################################
+  off_sets = NULL
+
+  if (!is.null(rowData(SE_bins)$gc_contents)) {
+    dds$sizeFactor = 1
+
+    indx_IP <- dds$design_IP == "IP"
+
+    message("Estimating GC content correction factors for IP samples...")
+
+    cqnObject_IP <-
+      suppressMessages(
+        cqn(
+          assay(dds)[, indx_IP],
+          lengths = rowData(dds)$region_widths,
+          lengthMethod = "fixed",
+          x = rowData(dds)$gc_contents,
+          sizeFactors = dds$sizeFactor[indx_IP],
+          verbose = FALSE,
+          sqn = FALSE
+        )
+      )
+
+
+    message("Estimating GC content correction factors for input samples...")
+
+    cqnObject_input <-
+      suppressMessages(
+        cqn(
+          assay(dds)[, !indx_IP],
+          lengths = rowData(dds)$region_widths,
+          lengthMethod = "fixed",
+          x = rowData(dds)$gc_contents,
+          sizeFactors = dds$sizeFactor[!indx_IP],
+          verbose = FALSE,
+          sqn = FALSE
+        )
+      )
+
+
+
+    off_sets <- matrix(NA, nrow = nrow(dds), ncol = ncol(dds))
+
+    rownames(off_sets) = rownames(dds)
+
+    off_sets[, indx_IP] <- cqnObject_IP$offset
+
+    off_sets[, !indx_IP] <- cqnObject_input$offset
+
+    rm(cqnObject_IP, cqnObject_input, indx_IP)
+  }
+
 
   N = sum(!dds$design_Treatment & dds$design_IP == "IP") * sum(!dds$design_Treatment & dds$design_IP == "input")
 
   fdr_M = matrix(NA,ncol = 1,nrow = nrow(dds))
-
+  if(is.null(off_sets)){
   for (i in which(!dds$design_Treatment & dds$design_IP == "IP")){
     for( j in which(!dds$design_Treatment & dds$design_IP == "input")){
       fdr_M <-  cbind(fdr_M,mayers_hypertest(assay(dds)[,i],
                                              assay(dds)[,j]))
+    }
+  }
+  }else{
+    for (i in which(!dds$design_Treatment & dds$design_IP == "IP")){
+      for( j in which(!dds$design_Treatment & dds$design_IP == "input")){
+        fdr_M <-  cbind(fdr_M,mayers_hypertest(assay(dds)[,i],
+                                               assay(dds)[,j],
+                                               off_sets[,i],
+                                               off_sets[,j]))
+      }
     }
   }
 
@@ -207,7 +279,7 @@ get_pred_list_mayer <- function(SE_Peak_counts,
 #' @rdname save_predict_peakcalling
 #' @export
 
-save_predict_peakcalling_mayer <- function(BAM_IP,BAM_INPUT,TXDB,PAIRED = FALSE,TITLE = "m6a"){
+save_predict_peakcalling_mayer <- function(BAM_IP,BAM_INPUT,TXDB,BSGNM,PAIRED = FALSE,TITLE = "m6a"){
 
   require(magrittr)
 
@@ -217,6 +289,7 @@ save_predict_peakcalling_mayer <- function(BAM_IP,BAM_INPUT,TXDB,PAIRED = FALSE,
                                paired_end = PAIRED)
 
   get_pred_list_mayer(SE_Peak_counts = ReadCount,
+                      bsgenome = BSGNM,
                       txdb = TXDB)  %>% saveRDS(.,paste0(TITLE,"_mayer.rds"))
 
  }
